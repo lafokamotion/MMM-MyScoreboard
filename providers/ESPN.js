@@ -191,25 +191,6 @@ module.exports = {
     //     "&limit=200";
 
 
-
-    /*
-      by default, ESPN returns only the Top 25 ranked teams for NCAAF
-      and NCAAM. By appending the group parameter (80 for NCAAF and 50
-      for NCAAM, found in the URL of their respective scoreboard pages
-      on ESPN.com) we'll get the entire game list.
-
-      March Madness is grouped separately in ESPN's feed. The way I
-      currently have things set up, I need to treat it like a different
-      league.
-    */
-    if (league == "NCAAF") {
-      url = url + "&groups=80";
-    } else if (league == "NCAAM") {
-      url = url + "&groups=50";
-    } else if (league == "NCAAM_MM") {
-      url = url + "&groups=100";
-    }
-
     request({url: url, method: "GET"}, function(r_err, response, body) {
 
       if(!r_err && response.statusCode == 200) {
@@ -405,39 +386,10 @@ module.exports = {
 
       }
 
-      /*
-        WTF...
-        for NCAAF, sometimes FCS teams (I-AA) play FBS (I-A) teams.  These are known as money
-        games. As such, the logos directory contains images for all of the FCS teams as well
-        as the FBS teams.  Wouldn't you know it but there is a SDSU in both divisions --
-        totally different schools!!!
-        So we'll deal with it here.  There is an SDSU logo file with a space at the end of
-        its name (e.g.: "SDSU .png" that is for the FCS team.  We'll use that abbreviation
-        which will load a different logo file, but the extra space will collapse in HTML
-        when the short code is displayed).
-
-        The big irony here is that the SAME school as the FCS SDSU has a different ESPN short
-        code for basketball: SDST.
-      */
-
-      if (league == "NCAAF" && hTeamData.team.abbreviation == "SDSU" && hTeamData.team.location.indexOf("South Dakota State") != -1) {
-        hTeamData.team.abbreviation = "SDSU ";
-      } else if (league == "NCAAF" && vTeamData.team.abbreviation == "SDSU" && vTeamData.team.location.indexOf("South Dakota State") != -1) {
-        vTeamData.team.abbreviation = "SDSU ";
-      }
 
       //determine which display name to use
-      var hTeamLong = "";
-      var vTeamLong = "";
-      //For college sports, use the displayName property
-      if (league == "NCAAF" || league == "NCAAM") {
-        hTeamLong = (hTeamData.team.abbreviation == undefined ? "" : hTeamData.team.abbreviation + " ") + hTeamData.team.name;
-        vTeamLong = (vTeamData.team.abbreviation == undefined ? "" : vTeamData.team.abbreviation + " ") + vTeamData.team.name;
-      } else { //use the shortDisplayName property
-        hTeamLong = hTeamData.team.shortDisplayName;
-        vTeamLong = vTeamData.team.shortDisplayName;
-      }
-
+      var hTeamLong = hTeamData.team.shortDisplayName;
+      var vTeamLong = vTeamData.team.shortDisplayName;
 
       formattedGamesList.push({
         classes: classes,
@@ -446,8 +398,8 @@ module.exports = {
         vTeam: vTeamData.team.abbreviation == undefined ? vTeamData.team.name.substring(0,4).toUpperCase() + " " : vTeamData.team.abbreviation,
         hTeamLong: hTeamLong,
         vTeamLong: vTeamLong,
-        hTeamRanking: (league == "NCAAF" || league == "NCAAM") ? this.formatT25Ranking(hTeamData.curatedRank.current) : null,
-        vTeamRanking: (league == "NCAAF" || league == "NCAAM") ? this.formatT25Ranking(vTeamData.curatedRank.current) : null,
+        hTeamRanking: null,
+        vTeamRanking: null,
         hScore: parseInt(hTeamData.score),
         vScore: parseInt(vTeamData.score),
         status: status,
