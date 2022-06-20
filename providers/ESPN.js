@@ -45,6 +45,9 @@ module.exports = {
 
     //North American Leagues
     "NBA": "basketball/nba",
+    "NFL": "football/nfl",
+    "NHL": "hockey/nhl",
+    "MLB": "baseball/mlb",
 
     //International Soccer
     "AFC_ASIAN_CUP": "soccer/afc.cup",
