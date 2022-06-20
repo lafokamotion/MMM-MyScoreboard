@@ -7,7 +7,6 @@ module.exports = NodeHelper.create({
   start: function() {
     console.log("Starting node_helper for module [" + this.name + "]");
 
-    this.providers.SNET = require("./providers/SNET.js");
     this.providers.ESPN = require("./providers/ESPN.js");
   },
 
