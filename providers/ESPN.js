@@ -5,11 +5,11 @@
   -------------------------------------
 
   Provides scores for
-    NCAAF (College Football, FBS Division)
-    NCAAM (College Basketball. Division I)
-    NCAAM_MM (College Basketball, March Madness Torunament)
+    MLB
+    NHL
+    NFL
     NBA (National Basketball Association)
-    Every fucking Soccer league ESPN supports
+    International and NA Socer
 
   You can get an idea of what sports and leagues are
   supported here:
